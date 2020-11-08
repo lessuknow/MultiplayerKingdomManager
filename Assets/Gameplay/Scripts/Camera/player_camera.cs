@@ -5,9 +5,10 @@ using UnityEngine;
 public class player_camera : MonoBehaviour
 {
 	public new Component camera = null;
-	public Transform camera_target = null;
-	private Vector3 _camera_position = Vector3.zero;
-	private Vector3 _camera_rotation = Vector3.zero;
+	public Transform target = null;
+
+	public const float sensitivity_x = 5.0f;
+	public const float sensitivity_y = 5.0f;
 
 	void Start()
 	{
@@ -16,7 +17,7 @@ public class player_camera : MonoBehaviour
 			Debug.LogWarning("camera is null!");
 		}
 
-		camera.transform.position = camera_target.position;
+		camera.transform.position = target.position;
     }
 
 	void Update()
@@ -24,7 +25,7 @@ public class player_camera : MonoBehaviour
 		float mouse_x = Input.GetAxis("Mouse X");
 		float mouse_y = Input.GetAxis("Mouse Y");
 
-		camera.transform.Rotate(Vector3.up, mouse_x, Space.World);
-		camera.transform.Rotate(Vector3.right, mouse_y, Space.World);
+		camera.transform.Rotate(Vector3.up, mouse_x * sensitivity_x, Space.World);
+		camera.transform.Rotate(Vector3.right, -mouse_y * sensitivity_y, Space.Self);
 	}
 }
