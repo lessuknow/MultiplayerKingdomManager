@@ -1,0 +1,13 @@
+Unity has two possible ways to store level data; scenes, and prefabs. Here I lay out the cases for when we shall use each.
+
+Scenes will be used to hold heavy-weight, static level data that there can only be one of. So for example: bootstrap level, primary gameplay level, extra geo level, base persistent data level, etc. These can be spawned in a level using the `scene_prefab.cs` script I added. I wish there was a safe way to load multiple of the same scene, but Unity's system for scene loading is baby mode.
+
+Prefabs will be used for most smaller pieces of level data. For example: player character, props, interactables, etc. Basically, if there's more than one of it, or it's small, it's a prefab.
+
+
+
+Future Work:
+
+Eventually we could extend what Unity has into an ad-hoc package loading system that can actually do some real work, but that would require some technical thought and work to make sure it's actually solid for the long run.
+
+The system would work like this example. `player_character_models.scene` would contain all possible player character model prefabs. This scene would be loaded once players need to be spawned, then the player scripts would pull the models from the scene once it was loaded, or the models would be pushed to the players. This system needs thought, as there's potentially an ideal way to implement it that saves us some extra work on working with said system.

@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using Mirror;
 
-public class Test : NetworkBehaviour
+public class Network_Test_Player : NetworkBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("E");
+        Debug.Log("Spawned");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
