@@ -440,27 +440,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91ed3fc72a096bf468d7fdc081e3b168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  default_keymap_ref:
+  _default_keymap:
     camera_x:
       axis_up: 
       axis_down: 
       axis_name:
-      - 
-      - 
+      - mouse_x
+      - camera_x
     camera_y:
       axis_up: 
       axis_down: 
       axis_name:
-      - 
-      - 
+      - mouse_y
+      - camera_y
     movement_x:
-      axis_up: 
-      axis_down: 
-      axis_name: []
+      axis_up: 6400000013010000
+      axis_down: 6100000014010000
+      axis_name:
+      - movement_x
     movement_z:
-      axis_up: 
-      axis_down: 
-      axis_name: []
+      axis_up: 7700000011010000
+      axis_down: 7300000012010000
+      axis_name:
+      - movement_z
+  deadzone: 0.15
 --- !u!4 &836131353
 Transform:
   m_ObjectHideFlags: 0
@@ -508,6 +511,11 @@ PrefabInstance:
       propertyPath: speed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 6037217726099967460, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: local_input_manager
+      value: 
+      objectReference: {fileID: 836131352}
     - target: {fileID: 6037217726099967463, guid: c54e8c999dce76649a40d8a78753a56f,
         type: 3}
       propertyPath: m_Interpolate
@@ -553,6 +561,26 @@ PrefabInstance:
       propertyPath: player_movement
       value: 
       objectReference: {fileID: 1582736980}
+    - target: {fileID: 6037217726476984780, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: input
+      value: 
+      objectReference: {fileID: 836131352}
+    - target: {fileID: 6037217726476984780, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: local_input_manager
+      value: 
+      objectReference: {fileID: 836131352}
+    - target: {fileID: 6037217726476984780, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: sensitivity_x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6037217726476984780, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: sensitivity_y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6037217726476984781, guid: c54e8c999dce76649a40d8a78753a56f,
         type: 3}
       propertyPath: m_LocalRotation.x

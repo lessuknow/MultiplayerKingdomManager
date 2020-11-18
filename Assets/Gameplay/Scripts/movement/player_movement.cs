@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class player_movement : MonoBehaviour
 {
+	public input_manager local_input_manager = null;
+
 	public Transform player_camera_transform = null;
 	public new Rigidbody rigidbody = null;
 
@@ -19,8 +21,8 @@ public class player_movement : MonoBehaviour
 	void Update()
 	{
 		// these ugly ternaries are temporary, input system will handle this more cleanly
-		float axis_x = (Input.GetKey(KeyCode.D) ? 1.0f : 0.0f) + (Input.GetKey(KeyCode.A) ? -1.0f : 0.0f);
-		float axis_z = (Input.GetKey(KeyCode.W) ? 1.0f : 0.0f) + (Input.GetKey(KeyCode.S) ? -1.0f : 0.0f);
+		float axis_x = local_input_manager.get_movement().x;
+		float axis_z = local_input_manager.get_movement().y;
 
 		Vector3 movement = axis_x * transform.right + axis_z * transform.forward;
 		movement = movement * speed;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class player_camera : MonoBehaviour
 {
+	public input_manager local_input_manager = null;
+
 	public new Component camera = null;
 	public Transform camera_target = null;
 
@@ -19,8 +21,9 @@ public class player_camera : MonoBehaviour
 
 	void Update()
 	{
-		float mouse_x = Input.GetAxis("mouse_x");
-		float mouse_y = Input.GetAxis("mouse_y");
+		// TODO : add mouse smoothing
+		float mouse_x = local_input_manager.get_camera().x;
+		float mouse_y = local_input_manager.get_camera().y;
 		
 		camera.transform.Rotate(Vector3.up, mouse_x * sensitivity_x, Space.World);
 
