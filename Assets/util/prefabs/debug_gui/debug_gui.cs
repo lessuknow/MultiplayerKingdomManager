@@ -45,9 +45,6 @@ public class debug_gui : MonoBehaviour
             Destroy(gameObject);
         } else {
             _instance = this;
-
-            // TODO: Discuss merits of having a script that only does Object.DontDestroyOnLoad().
-            // If this ends up being created, remove this method.
             DontDestroyOnLoad(gameObject);
         }
     }
