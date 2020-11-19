@@ -10,6 +10,7 @@ public class player_movement : MonoBehaviour
 	public new Rigidbody rigidbody = null;
 
 	public float speed = 2.0f;
+	public float velocity_lerp_strength = 0.7f;
 
 	private const int fixme_framerate_value = 60;	// FIXME : create `time_util.cs`
 
@@ -20,13 +21,13 @@ public class player_movement : MonoBehaviour
 
 	void Update()
 	{
-		// these ugly ternaries are temporary, input system will handle this more cleanly
+		// TODO : comment!
 		float axis_x = local_input_manager.get_movement().x;
 		float axis_z = local_input_manager.get_movement().y;
 
 		Vector3 movement = axis_x * transform.right + axis_z * transform.forward;
 		movement = movement * speed;
-		rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, movement, 0.7f * Time.deltaTime * fixme_framerate_value);
+		rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, movement, velocity_lerp_strength * Time.deltaTime * fixme_framerate_value);
 	}
 
 	void FixedUpdate()

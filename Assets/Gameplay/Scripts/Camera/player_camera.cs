@@ -25,6 +25,7 @@ public class player_camera : MonoBehaviour
 		float mouse_x = local_input_manager.get_camera().x;
 		float mouse_y = local_input_manager.get_camera().y;
 		
+		// TODO : comment!
 		camera.transform.Rotate(Vector3.up, mouse_x * sensitivity_x, Space.World);
 
 		Vector3 rotation = camera.transform.localRotation.eulerAngles;

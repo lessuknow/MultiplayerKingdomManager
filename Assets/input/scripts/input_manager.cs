@@ -62,6 +62,7 @@ public class keymap
 [System.Serializable]
 public class input_axis
 {
+	// TODO : comment what these are
 	public List<KeyCode> axis_up = new List<KeyCode>();
 	public List<KeyCode> axis_down = new List<KeyCode>();
 	public List<string> axis_name = new List<string>();
