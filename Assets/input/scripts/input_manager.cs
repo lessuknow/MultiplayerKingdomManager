@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class input_manager : MonoBehaviour
 {
+	public static input_manager instance {get;set;}
 	public keymap default_keymap { get { return _default_keymap.copy(); } }
 	[Tooltip("The default keymap to use for any user.")]
 	[SerializeField]
@@ -11,6 +12,18 @@ public class input_manager : MonoBehaviour
 	private keymap _user_keymap = null;
 
 	public float gamepad_deadzone = 0.15f;
+
+	public void Awake()
+	{
+		if(instance != null && instance != this)
+		{
+			Destroy(this);
+		}
+		else
+		{
+			input_manager.instance = this;
+		}
+	}
 
 	void Start()
 	{
