@@ -24,8 +24,12 @@ public class player_camera : MonoBehaviour
 
 	void Update()
 	{
-		/* inputs */
+		if(!local_input_manager)
+		{
+			return;
+		}
 
+		/* inputs */
 		Vector2 mouse_move = local_input_manager.get_camera();
 		
 		// smooth the input
