@@ -66,4 +66,6 @@ MonoBehaviour:
       axis_down: 7300000012010000
       axis_name:
       - movement_z
-  deadzone: 0.15
+    jump:
+      button: 200000004a010000
+  gamepad_deadzone: 0.15
