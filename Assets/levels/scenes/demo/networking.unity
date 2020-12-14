@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 226054851}
   - component: {fileID: 226054850}
   - component: {fileID: 226054854}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 459873270}
   - component: {fileID: 459873269}
   - component: {fileID: 459873268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,12 +427,12 @@ PrefabInstance:
     - target: {fileID: 235669560251704936, guid: 1dda527f3b2dad4498b6338974d95737,
         type: 3}
       propertyPath: _default_keymap.jump.button.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 235669560251704936, guid: 1dda527f3b2dad4498b6338974d95737,
         type: 3}
-      propertyPath: _default_keymap.jump.button.Array.data[0]
-      value: 32
+      propertyPath: _default_keymap.jump.button.Array.data[1]
+      value: 330
       objectReference: {fileID: 0}
     - target: {fileID: 235669560251704937, guid: 1dda527f3b2dad4498b6338974d95737,
         type: 3}

@@ -29,6 +29,11 @@ public class player_movement : MonoBehaviour
 
 	void Update()
 	{		
+		if(!local_input_manager)
+		{
+			return;
+		}
+
 		/* inputs */
 
 		float axis_x = local_input_manager.get_movement().x;
