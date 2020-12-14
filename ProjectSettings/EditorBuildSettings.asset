@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/levels/scenes/demo/local_demo_level.unity
     guid: 3176f0528c08aa343bffc57b9a9364ff
+  - enabled: 0
+    path: Assets/levels/scenes/working/character_mechanics.unity
+    guid: 2850752e23265e74e88cb4f49babc527
   m_configObjects: {}

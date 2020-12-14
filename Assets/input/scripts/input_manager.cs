@@ -13,6 +13,7 @@ public class input_manager : MonoBehaviour
 
 	public float gamepad_deadzone = 0.15f;
 
+	// XXX : what does this do?
 	public void Awake()
 	{
 		if(instance != null && instance != this)
@@ -27,7 +28,7 @@ public class input_manager : MonoBehaviour
 
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.lockState = CursorLockMode.None;// Locked;	// FIXME : fixes mouse lock bug on game start
 		_user_keymap = _default_keymap.copy();
 	}
 
