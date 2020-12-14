@@ -128,7 +128,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 75
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -172,9 +172,9 @@ MonoBehaviour:
   camera_target: {fileID: 6037217726099967461}
   player_mesh: {fileID: 1768306216530305283}
   camera_position: {x: 0, y: 1.55, z: 0}
-  sensitivity_x: 1
-  sensitivity_y: 1
-  smooth_factor: 0.25
+  sensitivity_x: 0.7
+  sensitivity_y: 0.7
+  smooth_factor: 1
 --- !u!1 &6037217726803239437
 GameObject:
   m_ObjectHideFlags: 0
