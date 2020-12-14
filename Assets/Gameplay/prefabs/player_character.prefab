@@ -126,7 +126,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 90
   orthographic: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   camera_position: {x: 0, y: 1.55, z: 0}
   sensitivity_x: 0.7
   sensitivity_y: 0.7
-  smooth_factor: 1
+  smooth_factor: 0.5
 --- !u!1 &6037217726803239437
 GameObject:
   m_ObjectHideFlags: 0
