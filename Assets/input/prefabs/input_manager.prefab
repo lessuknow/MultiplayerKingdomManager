@@ -68,4 +68,6 @@ MonoBehaviour:
       - movement_z
     jump:
       button: 200000004a010000
+    mouse:
+      button: 43010000
   gamepad_deadzone: 0.15

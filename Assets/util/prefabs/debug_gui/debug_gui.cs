@@ -60,7 +60,7 @@ public class debug_gui : MonoBehaviour
                 LogType.Error, 
                 new GUIStyle() 
                 {
-                    fontSize = 40,
+                    fontSize = 20,
                     normal = new GUIStyleState() {  textColor = Color.red }
                 }
             },   
@@ -68,7 +68,7 @@ public class debug_gui : MonoBehaviour
                 LogType.Assert, 
                 new GUIStyle() 
                 {
-                    fontSize = 40,
+                    fontSize = 20,
                     normal = new GUIStyleState() {  textColor = Color.green }
                 }
             },            
@@ -76,7 +76,7 @@ public class debug_gui : MonoBehaviour
                 LogType.Warning, 
                 new GUIStyle() 
                 {
-                    fontSize = 40,
+                    fontSize = 20,
                     normal = new GUIStyleState() {  textColor = new Color(255, 165, 0) }
                 }
             },
@@ -84,7 +84,7 @@ public class debug_gui : MonoBehaviour
                 LogType.Log,
                 new GUIStyle()
                 {
-                    fontSize = 40,
+                    fontSize = 20,
                     normal = new GUIStyleState() {  textColor = Color.white }
                 }
             },
@@ -92,7 +92,7 @@ public class debug_gui : MonoBehaviour
                 LogType.Exception,
                 new GUIStyle()
                 {
-                    fontSize = 40,
+                    fontSize = 20,
                     normal = new GUIStyleState() {  textColor = Color.magenta }
                 }
             },

@@ -15,6 +15,9 @@ public class player_network_initialization : NetworkBehaviour
     [SerializeField]
     private NetworkRigidbody _network_rigidbody;
 
+    [SerializeField]
+    private player_interaction _player_interaction;
+
     public override void OnStartClient()
     {
         Debug.Log(input_manager.instance);
@@ -27,6 +30,8 @@ public class player_network_initialization : NetworkBehaviour
         else
         {
             _player_movement.local_input_manager = input_manager.instance;
+            _player_interaction.local_input_manager = input_manager.instance;
+            _player_interaction.camera = _player_camera.GetComponent<Camera>();
             Debug.Log(_player_movement.local_input_manager);
             _player_camera.GetComponent<player_camera>().local_input_manager = input_manager.instance;
         }

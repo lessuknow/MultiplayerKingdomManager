@@ -64,6 +64,21 @@ public class input_manager : MonoBehaviour
 	{
 		return _user_keymap.jump.get_value(k_key_input_type.released);
 	}
+
+	public bool get_mouse_pressed()
+	{
+		return _user_keymap.mouse.get_value(k_key_input_type.pressed);
+	}
+
+	public bool get_mouse_down()
+	{
+		return _user_keymap.mouse.get_value(k_key_input_type.down);
+	}
+
+	public bool get_mouse_released()
+	{
+		return _user_keymap.mouse.get_value(k_key_input_type.released);
+	}
 }
 
 [System.Serializable]
@@ -77,6 +92,8 @@ public class keymap
 	public input_axis movement_z = null;
 
 	public input_button jump = null;
+
+	public input_button mouse = null;
 
 	public keymap copy()
 	{

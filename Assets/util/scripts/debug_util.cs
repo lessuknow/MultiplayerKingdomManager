@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public static class debug
 {
@@ -27,6 +28,14 @@ public static class debug
 	public static void print_line(string text)
 	{
 		Debug.Log(text);
+	}
+
+	/// <summary>
+	/// Log console message with Vector3.
+	/// </summary>
+	public static void print_line(Vector3 vector3)
+	{
+		Debug.Log("(" + vector3.x + " " + vector3.y + " " + vector3.z + ") - [ M: "+vector3.magnitude+" ]");
 	}
 
 	/// <summary>
