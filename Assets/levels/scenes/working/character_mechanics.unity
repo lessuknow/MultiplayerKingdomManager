@@ -318,6 +318,11 @@ PrefabInstance:
       propertyPath: sceneId
       value: 3006502304
       objectReference: {fileID: 0}
+    - target: {fileID: 190973117541555833, guid: c54e8c999dce76649a40d8a78753a56f,
+        type: 3}
+      propertyPath: m_AssetId
+      value: c54e8c999dce76649a40d8a78753a56f
+      objectReference: {fileID: 0}
     - target: {fileID: 6037217726099967460, guid: c54e8c999dce76649a40d8a78753a56f,
         type: 3}
       propertyPath: local_input_manager

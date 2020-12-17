@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class player_network_initialization : NetworkBehaviour
 {
+	public NetworkIdentity player_identity = null;
+
     [SerializeField]
     private player_movement _player_movement;
     
@@ -36,4 +38,14 @@ public class player_network_initialization : NetworkBehaviour
             _player_camera.GetComponent<player_camera>().local_input_manager = input_manager.instance;
         }
     }
+
+	public string get_player_id()
+	{
+		return player_identity.name;
+	}
+
+	public bool is_player_local()
+	{
+		return player_identity.isLocalPlayer;
+	}
 }

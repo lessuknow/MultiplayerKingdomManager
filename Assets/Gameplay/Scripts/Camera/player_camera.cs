@@ -5,9 +5,11 @@ using UnityEngine;
 public class player_camera : MonoBehaviour
 {
 	public input_manager local_input_manager = null;
+	public player_network_initialization network_player_manager = null;
 
-	public new Component camera = null;
+	public new Camera camera = null;
 	public Transform camera_target = null;
+	public MeshRenderer player_mesh = null;
 
 	public Vector3 camera_position = new Vector3(0, 1.55f, 0);
 	public float sensitivity_x = 1.0f;
@@ -19,7 +21,14 @@ public class player_camera : MonoBehaviour
 	void Start()
 	{
 		camera.transform.position += camera_position;
-		debug.print_line("player_camera of user " + "-1" + " initialized");	// TODO : figure out a way to identify who's camera this is in the future
+
+		if (network_player_manager.is_player_local())
+		{
+			player_mesh.enabled = false;
+			debug.print_line("Character model of player " + network_player_manager.get_player_id() + " hidden as player is local.");
+		}
+
+		debug.print_line("player_camera of player " + network_player_manager.get_player_id() + " initialized");
     }
 
 	void Update()
@@ -30,6 +39,7 @@ public class player_camera : MonoBehaviour
 		}
 
 		/* inputs */
+
 		Vector2 mouse_move = local_input_manager.get_camera();
 		
 		// smooth the input

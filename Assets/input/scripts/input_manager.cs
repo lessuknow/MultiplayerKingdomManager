@@ -13,6 +13,7 @@ public class input_manager : MonoBehaviour
 
 	public float gamepad_deadzone = 0.15f;
 
+	// XXX : what does this do?
 	public void Awake()
 	{
 		if(instance != null && instance != this)
@@ -27,7 +28,7 @@ public class input_manager : MonoBehaviour
 
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.lockState = CursorLockMode.None;// Locked;	// FIXME : fixes mouse lock bug on game start
 		_user_keymap = _default_keymap.copy();
 	}
 
@@ -47,7 +48,15 @@ public class input_manager : MonoBehaviour
 
 	public Vector2 get_camera()
 	{
-		return new Vector2(_user_keymap.camera_x.get_value(gamepad_deadzone), _user_keymap.camera_y.get_value(gamepad_deadzone));
+		// FIXME : only do this for mouse inputs, controller camera inputs should be handled differently
+		if (Cursor.lockState == CursorLockMode.Locked)
+		{
+			return new Vector2(_user_keymap.camera_x.get_value(gamepad_deadzone), _user_keymap.camera_y.get_value(gamepad_deadzone));
+		}
+		else
+		{
+			return Vector3.zero;
+		}
 	}
 
 	public bool get_jump_pressed()
