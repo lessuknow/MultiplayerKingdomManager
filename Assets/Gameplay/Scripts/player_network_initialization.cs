@@ -15,9 +15,6 @@ public class player_network_initialization : NetworkBehaviour
     private GameObject _player_camera;
 
     [SerializeField]
-    private NetworkRigidbody _network_rigidbody;
-
-    [SerializeField]
     private player_interaction _player_interaction;
 
     public override void OnStartClient()
@@ -28,6 +25,7 @@ public class player_network_initialization : NetworkBehaviour
         {
             _player_movement.enabled = false;
             _player_camera.SetActive(false);
+            _player_interaction.enabled = false;
         }
         else
         {
