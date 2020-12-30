@@ -22,10 +22,10 @@ public class debug_gui : MonoBehaviour
     [SerializeField]
     public bool enable_test_messages = false;
 
-    /// <summary>
-    /// Current instance of DebugGUI; this is used to enforce singleton.
-    /// </summary>
-    private static debug_gui _instance;
+	/// <summary>
+	/// Current instance of DebugGUI; this is used to enforce singleton.
+	/// </summary>
+	private static debug_gui _instance;
 
     /// <summary>
     /// All current log texts that are being displayed stored as (log_text, <see cref="LogType"/>).
@@ -98,7 +98,7 @@ public class debug_gui : MonoBehaviour
             },
 
         };
-    }
+	}
 
     void OnGUI()
     {
@@ -115,7 +115,7 @@ public class debug_gui : MonoBehaviour
     {
         // Misc. debug statements for testing, well the GUI.
         if (enable_test_messages)
-        { 
+        {
             if(Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift) && !Input.GetKey(KeyCode.RightShift))
             {
                 debug.print_warning("Help, I'm trapped in this computer!");
@@ -126,14 +126,14 @@ public class debug_gui : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Space) && !Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
             {
-                debug.print_line("Oh, it's not so bad! The computer baked us cookies!");  
+                debug.print_line("Oh, it's not so bad! The computer baked us cookies!");
             }
             else if(Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift))
             {
-                Debug.LogException(new System.Exception("Help. The cookies are made from us. They are tasty though."));  
+                Debug.LogException(new System.Exception("Help. The cookies are made from us. They are tasty though."));
             }
         }
-    }
+	}
 
     /// <summary>
     /// Callback added to <see cref="Application.LogCallback"/>, so that whenever any log is displayed we can also get those values.

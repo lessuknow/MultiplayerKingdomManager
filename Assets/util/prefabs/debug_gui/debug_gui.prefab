@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4919792097448207348}
   - component: {fileID: 3239999697498399738}
   m_Layer: 0
-  m_Name: debug_obj 1
+  m_Name: debug_gui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ffb5c6f813ab940b4ec6e34909d4c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fade_time: 3
+  enable_test_messages: 0
+  debug_camera: {fileID: 0}
