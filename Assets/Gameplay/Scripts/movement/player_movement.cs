@@ -10,6 +10,7 @@ public class player_movement : MonoBehaviour
 	public new Rigidbody rigidbody = null;
 
 	public float speed = 2.0f;
+	public float sprint_multiplier = 1.7f;
 	public float velocity_lerp_strength = 0.7f;
 
 	public float ground_raycast_distance = 0.04f;
@@ -46,7 +47,8 @@ public class player_movement : MonoBehaviour
 		if (axis_x != 0 || axis_z != 0)
 		{
 			Vector3 movement_velocity = axis_x * transform.right + axis_z * transform.forward;
-			movement_velocity = movement_velocity * speed;
+			float speed_total = speed * (local_input_manager.get_sprint_down() ? sprint_multiplier : 1.0f);
+			movement_velocity = movement_velocity * speed_total;
 			goal_velocity.x = movement_velocity.x;
 			goal_velocity.z = movement_velocity.z;
 		}

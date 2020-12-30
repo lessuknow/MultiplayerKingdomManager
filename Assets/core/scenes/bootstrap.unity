@@ -224,8 +224,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 235669560251704936, guid: 1dda527f3b2dad4498b6338974d95737,
         type: 3}
+      propertyPath: _default_keymap.sprint.button.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 235669560251704936, guid: 1dda527f3b2dad4498b6338974d95737,
+        type: 3}
       propertyPath: _default_keymap.jump.button.Array.data[1]
       value: 330
+      objectReference: {fileID: 0}
+    - target: {fileID: 235669560251704936, guid: 1dda527f3b2dad4498b6338974d95737,
+        type: 3}
+      propertyPath: _default_keymap.sprint.button.Array.data[0]
+      value: 304
       objectReference: {fileID: 0}
     - target: {fileID: 235669560251704937, guid: 1dda527f3b2dad4498b6338974d95737,
         type: 3}
