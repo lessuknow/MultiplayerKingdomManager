@@ -48,12 +48,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   local_input_manager: {fileID: 0}
   player_camera_transform: {fileID: 6037217726476984781}
-  rigidbody: {fileID: 6037217726099967463}
+  self_rigidbody: {fileID: 6037217726099967463}
+  self_collider: {fileID: 6037217727952931222}
   speed: 5
   sprint_multiplier: 1.7
   velocity_lerp_strength: 0.7
-  ground_raycast_distance: 0.02
-  spherecast_radius: 0.08
+  ground_raycast_distance: 0.3
+  spherecast_radius: 0.3
   initial_jump_force: 250
 --- !u!54 &6037217726099967463
 Rigidbody:
@@ -322,9 +323,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 1.7
+  m_Height: 1.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0.85, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &1786349050977648535
 PrefabInstance:
   m_ObjectHideFlags: 0

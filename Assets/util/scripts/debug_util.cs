@@ -35,6 +35,7 @@ public static class debug
 	/// </summary>
 	public static void print_line(Vector3 vector3)
 	{
+		// TODO : this should be a format function maybe?
 		Debug.Log("(" + vector3.x + " " + vector3.y + " " + vector3.z + ") - [ M: "+vector3.magnitude+" ]");
 	}
 
