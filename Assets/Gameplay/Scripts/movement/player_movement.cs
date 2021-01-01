@@ -146,6 +146,10 @@ public class player_movement : MonoBehaviour
 				continue;
 			}
 
+			// TODO : account for slopes with some height & horizontal distance calculation
+
+			// TODO : account for triggers
+
 			// TODO : in the future, account for collision's velocity if existant
 
 			if (collision_y_value > highest_y_value)
