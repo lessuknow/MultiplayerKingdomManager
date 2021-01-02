@@ -25,7 +25,6 @@ public class player_movement : MonoBehaviour
 
 	// input cache
 	private Vector2 movement_input = Vector2.zero;
-	private bool jump_pressed_input = false;
 
 	enum k_jump_state
 	{
