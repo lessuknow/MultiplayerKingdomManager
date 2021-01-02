@@ -27,8 +27,13 @@ public class player_movement : MonoBehaviour
 	private Vector2 movement_input = Vector2.zero;
 	private bool jump_pressed_input = false;
 
-	// TODO : make this a jump state enum for finer control, less bugs
-	//private bool jumping = false;
+	enum k_jump_state
+	{
+		none,
+		jump_pressed,
+		jumping
+	};
+	private k_jump_state jump_state = k_jump_state.none;
 
 	void Start()
 	{
@@ -39,10 +44,9 @@ public class player_movement : MonoBehaviour
 	{
 		movement_input = local_input_manager.get_movement();
 
-		if (local_input_manager.get_jump_pressed())
+		if (local_input_manager.get_jump_down() && jump_state == k_jump_state.none)
 		{
-			// we clear this value in FixedUpdate so that we don't drop the input
-			jump_pressed_input = true;
+			jump_state = k_jump_state.jump_pressed;
 		}
 	}
 
@@ -55,11 +59,8 @@ public class player_movement : MonoBehaviour
 
 		/* inputs */
 		
-		float axis_x = local_input_manager.get_movement().x;
-		float axis_z = local_input_manager.get_movement().y;
-
-		//bool jump_pressed = jump_pressed_input;
-		jump_pressed_input = false;
+		float axis_x = movement_input.x;
+		float axis_z = movement_input.y;
 
 		/* movement */
 
@@ -98,37 +99,26 @@ public class player_movement : MonoBehaviour
 		goal_velocity.y = self_rigidbody.velocity.y;
 
 		/* jumping */
-		/*RaycastHit ray_hit;
-		bool on_ground = Physics.SphereCast(transform.position, spherecast_radius, Vector3.down, out ray_hit, Mathf.Abs(ground_raycast_distance - spherecast_radius), 1 << 8);
-
-		if (!jumping)
+		
+		if (jump_state == k_jump_state.jump_pressed)
 		{
 			if (on_ground)
 			{
-				// if on ground, we don't want any vertical velocity
-				// FIXME : this will not completely work. needs to be handled in FixedUpdate (I think)
-				self_rigidbody.velocity = new Vector3(self_rigidbody.velocity.x, 0, self_rigidbody.velocity.y);
+				jump_state = k_jump_state.jumping;
+				self_rigidbody.AddForce(Vector3.up * initial_jump_force * self_rigidbody.mass - Physics.gravity);
 			}
-
-			if (local_input_manager.get_jump_down())
+			else
 			{
-				if (on_ground)
-				{
-					jumping = true;
-					self_rigidbody.AddForce(Vector3.up * initial_jump_force * self_rigidbody.mass - Physics.gravity);
-				}
+				jump_state = k_jump_state.none;
 			}
 		}
-		else
+		else if (jump_state == k_jump_state.jumping)
 		{
-			jumping = local_input_manager.get_jump_down();
-			
-			if (self_rigidbody.velocity.y < 0 && !on_ground)
+			if (on_ground)
 			{
-				// (for now) set jumping to false automatically when velocity goes negative
-				jumping = false;
+				jump_state = k_jump_state.none;
 			}
-		}*/
+		}
 
 		/* velocity application */
 
@@ -181,7 +171,8 @@ public class player_movement : MonoBehaviour
 
 			// TODO : account for slopes with some height & horizontal distance calculation?
 
-			// TODO : in the future, account for collision's velocity if existant
+			// TODO : in the future, account for collision's velocity and tag,
+			//		i.e. don't treat a book flying through the air as the ground
 
 			if (collision_y_value > best_y_value)
 			{
