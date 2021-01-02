@@ -11,7 +11,7 @@ public class player_interaction : NetworkBehaviour
     public float range = 8.5f;
 
     public input_manager local_input_manager;
-    public Camera camera;
+    public Camera player_camera;
 
     // Object the player is currently holding.
     private interactable _carried_object;
@@ -31,8 +31,8 @@ public class player_interaction : NetworkBehaviour
         // rename to item
         if (_carried_object is interactable_carry)
         {
-            Vector3 cursor_worldpos = camera.ScreenToWorldPoint(Input.mousePosition);
-            ((interactable_carry)_carried_object).set_goal_position(cursor_worldpos + camera.transform.forward * hold_distance);
+            Vector3 cursor_worldpos = player_camera.ScreenToWorldPoint(Input.mousePosition);
+            ((interactable_carry)_carried_object).set_goal_position(cursor_worldpos + player_camera.transform.forward * hold_distance);
         }
     }
 
@@ -44,7 +44,7 @@ public class player_interaction : NetworkBehaviour
             {
                 RaycastHit hit;
                 // Change to camera direction
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                Ray ray = player_camera.ScreenPointToRay(Input.mousePosition);
 
                 if (Physics.Raycast(ray, out hit, range, 1 << 9))
                 {

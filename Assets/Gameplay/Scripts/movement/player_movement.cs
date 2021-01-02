@@ -7,22 +7,28 @@ public class player_movement : MonoBehaviour
 	public input_manager local_input_manager = null;
 
 	public Transform player_camera_transform = null;
-	public new Rigidbody self_rigidbody = null;
+	public Rigidbody self_rigidbody = null;
 	public Collider self_collider = null;
 
 	public float speed = 2.0f;
 	public float sprint_multiplier = 1.7f;
 	public float velocity_lerp_strength = 0.7f;
 
-	public float ground_raycast_distance = 0.04f;
-	public float spherecast_radius = 0.08f;	// TODO : rename
-
 	public float initial_jump_force = 250.0f;
+
+	public float ground_collision_radius = 0.25f;
+	public float ground_collision_height = 0.2f;
+	public float k_ground_collision_epsilon = 0.01f;
+	public float k_vaulting_height = 0.20f;
 
 	private const int fixme_framerate_value = 60;   // FIXME : create `time_util.cs`
 
+	// input cache
+	private Vector2 movement_input = Vector2.zero;
+	private bool jump_pressed_input = false;
+
 	// TODO : make this a jump state enum for finer control, less bugs
-	private bool jumping = false;
+	//private bool jumping = false;
 
 	void Start()
 	{
@@ -30,16 +36,30 @@ public class player_movement : MonoBehaviour
 	}
 
 	void Update()
-	{		
-		if(!local_input_manager)
+	{
+		movement_input = local_input_manager.get_movement();
+
+		if (local_input_manager.get_jump_pressed())
+		{
+			// we clear this value in FixedUpdate so that we don't drop the input
+			jump_pressed_input = true;
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (!local_input_manager)
 		{
 			return;
 		}
 
 		/* inputs */
-
+		
 		float axis_x = local_input_manager.get_movement().x;
 		float axis_z = local_input_manager.get_movement().y;
+
+		//bool jump_pressed = jump_pressed_input;
+		jump_pressed_input = false;
 
 		/* movement */
 
@@ -47,11 +67,11 @@ public class player_movement : MonoBehaviour
 
 		if (axis_x != 0 || axis_z != 0)
 		{
-			Vector3 movement_velocity = axis_x * transform.right + axis_z * transform.forward;
+			Vector3 input_velocity = axis_x * transform.right + axis_z * transform.forward;
 			float speed_total = speed * (local_input_manager.get_sprint_down() ? sprint_multiplier : 1.0f);
-			movement_velocity = movement_velocity * speed_total;
-			goal_velocity.x = movement_velocity.x;
-			goal_velocity.z = movement_velocity.z;
+			input_velocity = input_velocity * speed_total;
+			goal_velocity.x = input_velocity.x;
+			goal_velocity.z = input_velocity.z;
 		}
 		else
 		{
@@ -59,14 +79,23 @@ public class player_movement : MonoBehaviour
 			goal_velocity.z = 0.0f;
 		}
 
-		float ground_collision_y = transform.position.y;
+		/* ground collision handling */
+
+		float ground_collision_y = self_rigidbody.position.y;
 		bool on_ground = get_ground_collision(out ground_collision_y);
 
 		if (on_ground)
 		{
-			goal_velocity.y = 0.0f;	// FIXME : this won't work for downward velocity, need direct set
-			self_rigidbody.position = new Vector3(self_rigidbody.position.x, ground_collision_y, self_rigidbody.position.z);
+			self_rigidbody.velocity = new Vector3(self_rigidbody.velocity.x, 0.0f, self_rigidbody.velocity.z);
+			goal_velocity.y = 0.0f;
+			self_rigidbody.position = new Vector3(self_rigidbody.position.x, ground_collision_y - k_ground_collision_epsilon, self_rigidbody.position.z);
 		}
+		else
+		{
+			float velocity_change = Physics.gravity.y * Time.fixedDeltaTime;
+			self_rigidbody.velocity = new Vector3(self_rigidbody.velocity.x, self_rigidbody.velocity.y + velocity_change, self_rigidbody.velocity.z);
+		}
+		goal_velocity.y = self_rigidbody.velocity.y;
 
 		/* jumping */
 		/*RaycastHit ray_hit;
@@ -104,12 +133,9 @@ public class player_movement : MonoBehaviour
 		/* velocity application */
 
 		self_rigidbody.velocity = Vector3.Lerp(self_rigidbody.velocity, goal_velocity, velocity_lerp_strength * Time.deltaTime * fixme_framerate_value);
-	}
 
-	void FixedUpdate()
-	{
-		// setting player rotation to camera rotation here so
-		//	that all position work is in the physics step
+		/* rotation */
+		
 		float rotation_difference = player_camera_transform.rotation.eulerAngles.y - transform.rotation.eulerAngles.y;
 		transform.Rotate(Vector3.up, rotation_difference, Space.World);
 	}
@@ -123,13 +149,11 @@ public class player_movement : MonoBehaviour
 	{
 		const int k_max_collisions = 16;
 		Collider[] collisions = new Collider[k_max_collisions];
-		Vector3 sphere_check_position = transform.position + Vector3.up * spherecast_radius;
-		int collision_count = Physics.OverlapSphereNonAlloc(sphere_check_position, spherecast_radius, collisions);
+		Vector3 sphere_check_position = self_rigidbody.position + Vector3.up * ground_collision_height;
+		int collision_count = Physics.OverlapSphereNonAlloc(sphere_check_position, ground_collision_radius, collisions);
 
-		float k_max_acceptable_y_diff = 0.25f;    // TODO : expose
-
-		float k_max_y_value = transform.position.y + k_max_acceptable_y_diff;
-		float highest_y_value = transform.position.y;
+		float k_max_y_value = self_rigidbody.position.y + k_vaulting_height;
+		float best_y_value = self_rigidbody.position.y;
 		bool value_found = false;
 		for (int i = 0; i < collision_count; i++)
 		{
@@ -139,27 +163,34 @@ public class player_movement : MonoBehaviour
 				continue;
 			}
 
-			float collision_y_value = collisions[i].ClosestPointOnBounds(sphere_check_position).y;
-			if (collision_y_value > k_max_y_value)
+			if (collisions[i].isTrigger)
 			{
-				// this value is too high up to be considered walkable
+				// this is a trigger and should not be treated as a collider
 				continue;
 			}
 
-			// TODO : account for slopes with some height & horizontal distance calculation
+			// we calculate the bottom of a sphere resting on the collision point, regardless of if the sphere is not centered on said point
+			float collision_distance = Vector3.Magnitude(sphere_check_position - collisions[i].ClosestPoint(sphere_check_position));
+			float collision_y_value = sphere_check_position.y - collision_distance;
 
-			// TODO : account for triggers
+			if (collision_y_value > k_max_y_value || collision_y_value < self_rigidbody.position.y)
+			{
+				// this value is too high up to be considered walkable, or too low to be standing on
+				continue;
+			}
+
+			// TODO : account for slopes with some height & horizontal distance calculation?
 
 			// TODO : in the future, account for collision's velocity if existant
 
-			if (collision_y_value > highest_y_value)
+			if (collision_y_value > best_y_value)
 			{
-				highest_y_value = collision_y_value;
+				best_y_value = collision_y_value;
 				value_found = true;
 			}
 		}
 
-		ground_collision_y = value_found ? highest_y_value : transform.position.y;
+		ground_collision_y = value_found ? best_y_value : self_rigidbody.position.y;
 		return value_found;
 	}
 }
