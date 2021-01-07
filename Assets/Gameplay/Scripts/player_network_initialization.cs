@@ -25,14 +25,12 @@ public class player_network_initialization : NetworkBehaviour
         {
             _player_movement.enabled = false;
             _player_camera.SetActive(false);
-            _player_interaction.enabled = false;
         }
         else
         {
             _player_movement.local_input_manager = input_manager.instance;
             _player_interaction.local_input_manager = input_manager.instance;
             _player_interaction.player_camera = _player_camera.GetComponent<Camera>();
-            Debug.Log(_player_movement.local_input_manager);
             _player_camera.GetComponent<player_camera>().local_input_manager = input_manager.instance;
         }
     }
