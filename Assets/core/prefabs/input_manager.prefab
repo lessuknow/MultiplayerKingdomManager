@@ -44,6 +44,43 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _default_keymap:
+    axes:
+    - axis_name: camera_x
+      axis:
+        axis_up: 
+        axis_down: 
+        axis_name:
+        - mouse_x
+        - camera_x
+    - axis_name: camera_y
+      axis:
+        axis_up: 
+        axis_down: 
+        axis_name:
+        - mouse_y
+        - camera_y
+    - axis_name: movement_x
+      axis:
+        axis_up: 6400000013010000
+        axis_down: 6100000014010000
+        axis_name:
+        - movement_x
+    - axis_name: movement_z
+      axis:
+        axis_up: 7700000011010000
+        axis_down: 7300000012010000
+        axis_name:
+        - movement_z
+    buttons:
+    - button_name: jump
+      button:
+        button: 200000004a010000
+    - button_name: sprint
+      button:
+        button: 30010000
+    - button_name: mouse_click
+      button:
+        button: 43010000
     camera_x:
       axis_up: 
       axis_down: 
@@ -68,6 +105,8 @@ MonoBehaviour:
       - movement_z
     jump:
       button: 200000004a010000
+    sprint:
+      button: 30010000
     mouse:
       button: 43010000
   gamepad_deadzone: 0.15

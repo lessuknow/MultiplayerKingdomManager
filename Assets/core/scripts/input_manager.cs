@@ -8,10 +8,8 @@ public class input_manager : MonoBehaviour
 	public keymap default_keymap { get { return _default_keymap.copy(); } }
 	[Tooltip("The default keymap to use for any user.")]
 	[SerializeField]
-	private keymap _default_keymap = null;
+	private keymap _default_keymap = new keymap();
 	private keymap _user_keymap = null;
-
-	public float gamepad_deadzone = 0.15f;
 
 	// XXX : what does this do?
 	public void Awake()
@@ -29,6 +27,7 @@ public class input_manager : MonoBehaviour
 	void Start()
 	{
 		Cursor.lockState = CursorLockMode.None;// Locked;	// FIXME : fixes mouse lock bug on game start
+		_default_keymap.init_keymap();
 		_user_keymap = _default_keymap.copy();
 	}
 
@@ -40,80 +39,76 @@ public class input_manager : MonoBehaviour
 		}
 	}
 
-	public Vector2 get_movement()
+	public float get_axis_value(string name)
 	{
-		Vector2 movement_input = new Vector2(_user_keymap.movement_x.get_value(gamepad_deadzone), _user_keymap.movement_z.get_value(gamepad_deadzone));
-		return movement_input.normalized;
+		return _user_keymap.get_axis_value(name);
 	}
 
-	public Vector2 get_camera()
+	public bool get_button_pressed(string name)
 	{
-		// FIXME : only do this for mouse inputs, controller camera inputs should be handled differently
-		if (Cursor.lockState == CursorLockMode.Locked)
-		{
-			return new Vector2(_user_keymap.camera_x.get_value(gamepad_deadzone), _user_keymap.camera_y.get_value(gamepad_deadzone));
-		}
-		else
-		{
-			return Vector3.zero;
-		}
+		return _user_keymap.get_button_value(name, k_key_input_type.pressed);
 	}
 
-	public bool get_jump_pressed()
+	public bool get_button_down(string name)
 	{
-		return _user_keymap.jump.get_value(k_key_input_type.pressed);
+		return _user_keymap.get_button_value(name, k_key_input_type.down);
 	}
 
-	public bool get_jump_down()
+	public bool get_button_released(string name)
 	{
-		return _user_keymap.jump.get_value(k_key_input_type.down);
-	}
-
-	public bool get_jump_released()
-	{
-		return _user_keymap.jump.get_value(k_key_input_type.released);
-	}
-
-	public bool get_sprint_down()
-	{
-		return _user_keymap.sprint.get_value(k_key_input_type.down);
-	}
-
-	public bool get_mouse_pressed()
-	{
-		return _user_keymap.mouse.get_value(k_key_input_type.pressed);
-	}
-
-	public bool get_mouse_down()
-	{
-		return _user_keymap.mouse.get_value(k_key_input_type.down);
-	}
-
-	public bool get_mouse_released()
-	{
-		return _user_keymap.mouse.get_value(k_key_input_type.released);
+		return _user_keymap.get_button_value(name, k_key_input_type.released);
 	}
 }
 
 [System.Serializable]
 public class keymap
 {
-	// TODO : eventually change these to lists of action/input pairs.
-	//		so like "camera_look"/input_axis and "jump"/input_button
-	public input_axis camera_x = null;
-	public input_axis camera_y = null;
-	public input_axis movement_x = null;
-	public input_axis movement_z = null;
+	public string_axis_pair[] axes;
+	public string_button_pair[] buttons;
 
-	public input_button jump = null;
-	public input_button sprint = null;
+	public float gamepad_deadzone = 0.15f;
 
-	public input_button mouse = null;
+	private Dictionary<string, input_axis> _axes_dict = new Dictionary<string, input_axis>();
+	private Dictionary<string, input_button> _buttons_dict = new Dictionary<string, input_button>();
+
+	public void init_keymap()
+	{
+		_axes_dict.Clear();
+		_buttons_dict.Clear();
+
+		for (int i = 0; i < axes.Length; i++)
+		{
+			_axes_dict.Add(axes[i].axis_name, axes[i].axis);
+		}
+
+		for (int i = 0; i < buttons.Length; i++)
+		{
+			_buttons_dict.Add(buttons[i].button_name, buttons[i].button);
+		}
+	}
+
+	public float get_axis_value(string name)
+	{
+		return _axes_dict[name].get_value(gamepad_deadzone);
+	}
+
+	public bool get_button_value(string name, k_key_input_type input_type)
+	{
+		return _buttons_dict[name].get_value(input_type);
+	}
 
 	public keymap copy()
 	{
+		// FIXME : this will not work!... does that matter though? variables are protected
 		return (keymap)MemberwiseClone();
 	}
+}
+
+[System.Serializable]
+public class string_axis_pair
+{
+	public string axis_name = "";
+	public input_axis axis = null;
 }
 
 [System.Serializable]
@@ -166,6 +161,13 @@ public enum k_key_input_type
 	down,
 	released
 };
+
+[System.Serializable]
+public class string_button_pair
+{
+	public string button_name;
+	public input_button button;
+}
 
 [System.Serializable]
 public class input_button
