@@ -81,32 +81,5 @@ MonoBehaviour:
     - button_name: mouse_click
       button:
         button: 43010000
-    camera_x:
-      axis_up: 
-      axis_down: 
-      axis_name:
-      - mouse_x
-      - camera_x
-    camera_y:
-      axis_up: 
-      axis_down: 
-      axis_name:
-      - mouse_y
-      - camera_y
-    movement_x:
-      axis_up: 6400000013010000
-      axis_down: 6100000014010000
-      axis_name:
-      - movement_x
-    movement_z:
-      axis_up: 7700000011010000
-      axis_down: 7300000012010000
-      axis_name:
-      - movement_z
-    jump:
-      button: 200000004a010000
-    sprint:
-      button: 30010000
-    mouse:
-      button: 43010000
-  gamepad_deadzone: 0.15
+    gamepad_deadzone: 0.15
+  local_time_manager: {fileID: 0}

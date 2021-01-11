@@ -11,6 +11,8 @@ public class input_manager : MonoBehaviour
 	private keymap _default_keymap = new keymap();
 	private keymap _user_keymap = null;
 
+	public time_manager local_time_manager = null;
+
 	// XXX : what does this do?
 	public void Awake()
 	{
@@ -68,39 +70,54 @@ public class keymap
 
 	public float gamepad_deadzone = 0.15f;
 
-	private Dictionary<string, input_axis> _axes_dict = new Dictionary<string, input_axis>();
-	private Dictionary<string, input_button> _buttons_dict = new Dictionary<string, input_button>();
+	private Dictionary<string, input_axis> _input_axes = new Dictionary<string, input_axis>();
+	private Dictionary<string, input_button> _input_buttons = new Dictionary<string, input_button>();
+
+	private List<int> _input_times_ms = new List<int>();
+	private List<Dictionary<string, float>> _axis_values = new List<Dictionary<string, float>>();
+	private List<Dictionary<string, k_key_input_type>> _button_values = new List<Dictionary<string, k_key_input_type>>();
 
 	public void init_keymap()
 	{
-		_axes_dict.Clear();
-		_buttons_dict.Clear();
+		_input_axes.Clear();
+		_input_buttons.Clear();
 
 		for (int i = 0; i < axes.Length; i++)
 		{
-			_axes_dict.Add(axes[i].axis_name, axes[i].axis);
+			_input_axes.Add(axes[i].axis_name, axes[i].axis);
 		}
 
 		for (int i = 0; i < buttons.Length; i++)
 		{
-			_buttons_dict.Add(buttons[i].button_name, buttons[i].button);
+			_input_buttons.Add(buttons[i].button_name, buttons[i].button);
 		}
+	}
+
+	public void record_inputs(time_manager tm)
+	{
+		_input_times_ms.Add(tm.get_time_ms());
 	}
 
 	public float get_axis_value(string name)
 	{
-		return _axes_dict[name].get_value(gamepad_deadzone);
+		return _input_axes[name].get_value(gamepad_deadzone);
 	}
 
 	public bool get_button_value(string name, k_key_input_type input_type)
 	{
-		return _buttons_dict[name].get_value(input_type);
+		return _input_buttons[name].get_value(input_type);
 	}
 
 	public keymap copy()
 	{
-		// FIXME : this will not work!... does that matter though? variables are protected
-		return (keymap)MemberwiseClone();
+		// first, clone shallow class members (ints, floats, etc)
+		keymap keymap_copy = (keymap)MemberwiseClone();
+
+		// copy object data
+		// TODO : actually copy the object data here lol
+
+
+		return keymap_copy;
 	}
 }
 
