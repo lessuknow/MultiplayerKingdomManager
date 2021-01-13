@@ -4,21 +4,42 @@ using UnityEngine;
 
 public class time_manager : MonoBehaviour
 {
-	private int time_ms = 0;
+	public int default_framerate = 60;
 
-	private int fixed_time_ms = 0;
+	private int _time_ms = 0;
 
-	private int gameplay_time_ms = 0;
+	private int _fixed_time_ms = 0;
+
+	private int _gameplay_time_ms = 0;
+
+	void Start()
+	{
+		set_framerate(default_framerate);
+	}
 
 	void Update()
 	{
-		time_ms = time_ms + (int)(Time.deltaTime * 1000.0f);
-		gameplay_time_ms = gameplay_time_ms + (int)(Time.deltaTime * 1000.0f);
+		_time_ms = _time_ms + (int)(Time.deltaTime * 1000.0f);
+		_gameplay_time_ms = _gameplay_time_ms + (int)(Time.deltaTime * 1000.0f);
 	}
 
 	void FixedUpdate()
 	{
-		fixed_time_ms = fixed_time_ms + (int)(Time.fixedDeltaTime * 1000.0f);
+		_fixed_time_ms = _fixed_time_ms + (int)(Time.fixedDeltaTime * 1000.0f);
+	}
+
+	/// <summary>
+	/// Set the framerate of the application.
+	/// </summary>
+	public void set_framerate(int framerate)
+	{
+		if (framerate < 1)
+		{
+			debug.print_warning("Value framerate cannot be set to any value less than 1");
+			return;
+		}
+
+		Application.targetFrameRate = framerate;
 	}
 
 	/// <summary>
@@ -29,7 +50,7 @@ public class time_manager : MonoBehaviour
 	/// <returns> The time in ms since start calculated from Update() </returns>
 	public int get_time_ms()
 	{
-		return time_ms;
+		return _time_ms;
 	}
 
 	/// <summary>
@@ -40,7 +61,7 @@ public class time_manager : MonoBehaviour
 	/// <returns> The time in ms since start calculated from FixedUpdate() </returns>
 	public int get_fixed_time_ms()
 	{
-		return fixed_time_ms;
+		return _fixed_time_ms;
 	}
 
 	/// <summary>
@@ -51,7 +72,7 @@ public class time_manager : MonoBehaviour
 	/// <returns> The time in ms since current play session start calculated from Update() </returns>
 	public int get_gameplay_time_ms()
 	{
-		return gameplay_time_ms;
+		return _gameplay_time_ms;
 	}
 
 	/// <summary>
@@ -62,7 +83,7 @@ public class time_manager : MonoBehaviour
 	{
 		if (value >= 0)
 		{
-			gameplay_time_ms = value;
+			_gameplay_time_ms = value;
 		}
 	}
 }

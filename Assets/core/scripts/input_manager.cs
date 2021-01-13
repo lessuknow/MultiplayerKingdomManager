@@ -1,22 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class input_manager : MonoBehaviour
 {
-	public static input_manager instance {get;set;}
+	public static input_manager instance { get; set; }
 	public keymap default_keymap { get { return _default_keymap.copy(); } }
 	[Tooltip("The default keymap to use for any user.")]
 	[SerializeField]
 	private keymap _default_keymap = new keymap();
 	private keymap _user_keymap = null;
 
+	private List<input_record> _input_records = new List<input_record>();
+	private int _input_read_time_ms = -1;
+
 	public time_manager local_time_manager = null;
 
 	// XXX : what does this do?
 	public void Awake()
 	{
-		if(instance != null && instance != this)
+		if (instance != null && instance != this)
 		{
 			Destroy(this);
 		}
@@ -28,38 +32,122 @@ public class input_manager : MonoBehaviour
 
 	void Start()
 	{
-		Cursor.lockState = CursorLockMode.None;// Locked;	// FIXME : fixes mouse lock bug on game start
-		_default_keymap.init_keymap();
+		Cursor.lockState = CursorLockMode.None;
 		_user_keymap = _default_keymap.copy();
 	}
 
 	void Update()
 	{
+		/* update the input records */
+
+		if (_input_read_time_ms >= 0)
+		{
+			// input records have been read in FixedUpdate and are now stale
+			_input_records.Clear();
+			_input_read_time_ms = -1;
+		}
+
+		input_record current_input_record = new input_record();
+		_user_keymap.record_inputs(current_input_record, local_time_manager);
+		_input_records.Add(current_input_record);
+
+		/* mouse cursor handling */
+
 		if (Input.GetKeyDown(KeyCode.F2))
 		{
 			Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
+			Cursor.visible = Cursor.lockState == CursorLockMode.None;
+		}
+	}
+
+	void FixedUpdate()
+	{
+		if (_input_read_time_ms < 0)
+		{
+			// input records have not yet been read
+			_input_read_time_ms = local_time_manager.get_fixed_time_ms();
+		}
+		else
+		{
+			// input records were read on previous FixedUpdate
+			_input_records.Clear();
+			_input_read_time_ms = -1;
 		}
 	}
 
 	public float get_axis_value(string name)
 	{
-		return _user_keymap.get_axis_value(name);
+		// XXX : for now, return latest axis input regardless of what update we're
+		//		in. in the future, we may want to treat this case differently
+		return _input_records[_input_records.Count - 1].get_axis_value(name);
 	}
 
 	public bool get_button_pressed(string name)
 	{
-		return _user_keymap.get_button_value(name, k_key_input_type.pressed);
+		if (!Time.inFixedTimeStep)
+		{
+			input_record latest_record = _input_records[_input_records.Count - 1];
+			return latest_record.get_button_value(name) == k_key_input_type.pressed;
+		}
+		else
+		{
+			for (int i = 0; i < _input_records.Count; i++)
+			{
+				if (_input_records[i].get_button_value(name) == k_key_input_type.pressed)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public bool get_button_down(string name)
 	{
-		return _user_keymap.get_button_value(name, k_key_input_type.down);
+		if (!Time.inFixedTimeStep)
+		{
+			input_record latest_record = _input_records[_input_records.Count - 1];
+			return latest_record.get_button_value(name) == k_key_input_type.pressed ||
+				latest_record.get_button_value(name) == k_key_input_type.down;
+		}
+		else
+		{
+			for (int i = 0; i < _input_records.Count; i++)
+			{
+				if (_input_records[i].get_button_value(name) == k_key_input_type.pressed ||
+						_input_records[i].get_button_value(name) == k_key_input_type.down)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public bool get_button_released(string name)
 	{
-		return _user_keymap.get_button_value(name, k_key_input_type.released);
+		if (!Time.inFixedTimeStep)
+		{
+			input_record latest_record = _input_records[_input_records.Count - 1];
+			return latest_record.get_button_value(name) == k_key_input_type.released;
+		}
+		else
+		{
+			for (int i = 0; i < _input_records.Count; i++)
+			{
+				if (_input_records[i].get_button_value(name) == k_key_input_type.released)
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
+
+	// TODO : as necessary, add functions that allow other scripts to access all input/time data
 }
 
 [System.Serializable]
@@ -68,44 +156,19 @@ public class keymap
 	public string_axis_pair[] axes;
 	public string_button_pair[] buttons;
 
-	public float gamepad_deadzone = 0.15f;
-
-	private Dictionary<string, input_axis> _input_axes = new Dictionary<string, input_axis>();
-	private Dictionary<string, input_button> _input_buttons = new Dictionary<string, input_button>();
-
-	private List<int> _input_times_ms = new List<int>();
-	private List<Dictionary<string, float>> _axis_values = new List<Dictionary<string, float>>();
-	private List<Dictionary<string, k_key_input_type>> _button_values = new List<Dictionary<string, k_key_input_type>>();
-
-	public void init_keymap()
+	public void record_inputs(input_record inputs, time_manager tm)
 	{
-		_input_axes.Clear();
-		_input_buttons.Clear();
-
 		for (int i = 0; i < axes.Length; i++)
 		{
-			_input_axes.Add(axes[i].axis_name, axes[i].axis);
+			inputs.record_axis(axes[i]);
 		}
 
 		for (int i = 0; i < buttons.Length; i++)
 		{
-			_input_buttons.Add(buttons[i].button_name, buttons[i].button);
+			inputs.record_button(buttons[i]);
 		}
-	}
 
-	public void record_inputs(time_manager tm)
-	{
-		_input_times_ms.Add(tm.get_time_ms());
-	}
-
-	public float get_axis_value(string name)
-	{
-		return _input_axes[name].get_value(gamepad_deadzone);
-	}
-
-	public bool get_button_value(string name, k_key_input_type input_type)
-	{
-		return _input_buttons[name].get_value(input_type);
+		inputs.record_time_ms(tm.get_time_ms());
 	}
 
 	public keymap copy()
@@ -116,8 +179,44 @@ public class keymap
 		// copy object data
 		// TODO : actually copy the object data here lol
 
-
 		return keymap_copy;
+	}
+}
+
+public class input_record
+{
+	private Dictionary<string, float> _axis_values = new Dictionary<string, float>();
+	private Dictionary<string, k_key_input_type> _button_values = new Dictionary<string, k_key_input_type>();
+	private int _input_time_ms = -1;
+
+	public void record_axis(string_axis_pair pair)
+	{
+		_axis_values[pair.axis_name] = pair.axis.get_value();
+	}
+
+	public void record_button(string_button_pair pair)
+	{
+		_button_values[pair.button_name] = pair.button.get_value();
+	}
+
+	public void record_time_ms(int time_ms)
+	{
+		_input_time_ms = time_ms;
+	}
+
+	public float get_axis_value(string name)
+	{
+		return _axis_values[name];
+	}
+
+	public k_key_input_type get_button_value(string name)
+	{
+		return _button_values[name];
+	}
+
+	public int get_input_time_ms()
+	{
+		return _input_time_ms;
 	}
 }
 
@@ -136,12 +235,14 @@ public class input_axis
 	[Tooltip("Any keys or buttons to treat as the down axis.")]
 	public List<KeyCode> axis_down = new List<KeyCode>();
 	[Tooltip("An axis to reference by name in Unity's input manager.")]
-	public List<string> axis_name = new List<string>();
+	public List<string> axis_name = new List<string>();	
+	// TODO : implement deadzones at the axis level
+	// public float axis_deadzone = 0.0f;
 
 	/// <summary>
 	/// Returns the axis value.
 	/// </summary>
-	public float get_value(float gamepad_deadzone)
+	public float get_value()
 	{
 		float value = 0.0f;
 		for (int i = 0; i < axis_up.Count; i++)
@@ -164,9 +265,13 @@ public class input_axis
 
 		for (int i = 0; i < axis_name.Count; i++)
 		{
-			float axis_value = Input.GetAxisRaw(axis_name[i]);
-			value += Mathf.Abs(axis_value) > gamepad_deadzone ? axis_value : 0.0f;
+			value = Input.GetAxisRaw(axis_name[i]);
+			if (value != 0.0f)
+			{
+				return value;
+			}
 		}
+
 		return value;
 	}
 }
@@ -195,26 +300,22 @@ public class input_button
 	/// <summary>
 	/// Returns the button value.
 	/// </summary>
-	public bool get_value(k_key_input_type input_type)
+	public k_key_input_type get_value()
 	{
-		bool value = false;
-
 		for (int i = 0; i < button.Count; i++)
 		{
-			if (input_type == k_key_input_type.pressed)
+			k_key_input_type input_type =
+				Input.GetKeyDown(button[i]) ? k_key_input_type.pressed :
+				Input.GetKey(button[i]) ? k_key_input_type.down :
+				Input.GetKeyUp(button[i]) ? k_key_input_type.released :
+				k_key_input_type.none;
+
+			if (input_type != k_key_input_type.none)
 			{
-				value = value || Input.GetKeyDown(button[i]);
-			}
-			else if (input_type == k_key_input_type.down)
-			{
-				value = value || Input.GetKey(button[i]);
-			}
-			else if(input_type == k_key_input_type.released)
-			{
-				value = value || Input.GetKeyUp(button[i]);
+				return input_type;
 			}
 		}
 
-		return value;
+		return k_key_input_type.none;
 	}
 }
