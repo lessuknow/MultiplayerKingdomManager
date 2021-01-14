@@ -93,7 +93,7 @@ public class player_interaction : NetworkBehaviour
         {
             RaycastHit hit;
             // Change to camera direction
-            Ray ray = player_camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = player_camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 
             if (Physics.Raycast(ray, out hit, range, 1 << 9) && _carried_object == null)
             {

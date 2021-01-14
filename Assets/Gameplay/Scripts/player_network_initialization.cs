@@ -20,8 +20,9 @@ public class player_network_initialization : NetworkBehaviour
     public override void OnStartClient()
     {
         Debug.Log(input_manager.instance);
-    
-        if(!isLocalPlayer)
+        Physics.IgnoreLayerCollision(10, 10, true);
+
+        if (!isLocalPlayer)
         {
             _player_movement.enabled = false;
             _player_camera.SetActive(false);

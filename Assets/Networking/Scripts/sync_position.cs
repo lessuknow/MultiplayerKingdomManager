@@ -20,7 +20,7 @@ public class sync_position : NetworkBehaviour
         if (isLocalPlayer)
         {
             CmdSyncPos(
-                transform.localPosition,
+                transform.position,
                 transform.localRotation,
                 playerBody.transform.localRotation,
                 physicsRoot.velocity);
@@ -44,7 +44,7 @@ public class sync_position : NetworkBehaviour
         }
         if (!isLocalPlayer)
         {
-            transform.localPosition = localPosition;
+            transform.position = localPosition;
             transform.localRotation = localRotation;
             playerBody.transform.localRotation = bodyRotation;
             physicsRoot.velocity = velocity;
