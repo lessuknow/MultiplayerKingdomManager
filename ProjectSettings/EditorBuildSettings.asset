@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/core/scenes/bootstrap.unity
+    path: Assets/scenes/core/bootstrap.unity
     guid: 938fa2b9336c7a74b9cc74fbcfa4b4a5
   - enabled: 1
-    path: Assets/levels/scenes/active/castle_level.unity
+    path: Assets/scenes/levels/active/castle_level.unity
     guid: fd80a9b6978e9a04b9453767afb7adce
   - enabled: 1
-    path: Assets/networking/scenes/network.unity
+    path: Assets/scenes/networking/network.unity
     guid: e531b267f7e4d8646acdb11574885102
   m_configObjects: {}
