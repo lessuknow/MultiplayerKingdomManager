@@ -160,6 +160,11 @@ public class player_movement : MonoBehaviour
 				continue;
 			}
 
+			if (collisions[i].gameObject.layer == 10)
+            {
+				continue;
+            }
+
 			// we calculate the bottom of a sphere resting on the collision point, regardless of if the sphere is not centered on said point
 			float collision_distance = Vector3.Magnitude(sphere_check_position - collisions[i].ClosestPoint(sphere_check_position));
 			float collision_y_value = sphere_check_position.y - collision_distance;
