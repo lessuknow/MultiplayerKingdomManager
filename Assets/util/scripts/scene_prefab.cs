@@ -27,6 +27,7 @@ public class scene_prefab : MonoBehaviour
 	{
 		if (scene_state != k_scene_state.loaded)
 		{
+			// TODO : detect duplicate scene_prefab instances
 			SceneManager.LoadSceneAsync(scene_name, LoadSceneMode.Additive);
 			scene_state = k_scene_state.loaded;
 			debug.print_line("Loading scene " + scene_name);

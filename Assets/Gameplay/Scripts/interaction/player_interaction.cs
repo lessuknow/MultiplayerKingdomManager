@@ -89,7 +89,7 @@ public class player_interaction : NetworkBehaviour
 
     private void process_inputs()
     {
-        if (local_input_manager.get_mouse_pressed())
+        if (local_input_manager.get_button_pressed("mouse_click"))
         {
             RaycastHit hit;
             // Change to camera direction

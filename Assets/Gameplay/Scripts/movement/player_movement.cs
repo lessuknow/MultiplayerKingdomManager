@@ -41,9 +41,11 @@ public class player_movement : MonoBehaviour
 
 	void Update()
 	{
-		movement_input = local_input_manager.get_movement();
+		float movement_x = local_input_manager.get_axis_value("movement_x");
+		float movement_z = local_input_manager.get_axis_value("movement_z");
+		movement_input = new Vector2(movement_x, movement_z);
 
-		if (local_input_manager.get_jump_down() && jump_state == k_jump_state.none)
+		if (local_input_manager.get_button_down("jump") && jump_state == k_jump_state.none)
 		{
 			jump_state = k_jump_state.jump_pressed;
 		}
@@ -68,7 +70,7 @@ public class player_movement : MonoBehaviour
 		if (axis_x != 0 || axis_z != 0)
 		{
 			Vector3 input_velocity = axis_x * transform.right + axis_z * transform.forward;
-			float speed_total = speed * (local_input_manager.get_sprint_down() ? sprint_multiplier : 1.0f);
+			float speed_total = speed * (local_input_manager.get_button_down("sprint") ? sprint_multiplier : 1.0f);
 			input_velocity = input_velocity * speed_total;
 			goal_velocity.x = input_velocity.x;
 			goal_velocity.z = input_velocity.z;
@@ -136,7 +138,7 @@ public class player_movement : MonoBehaviour
 	/// <returns> true if on the ground, false otherwise </returns>
 	bool get_ground_collision(out float ground_collision_y)
 	{
-		const int k_max_collisions = 16;
+		const int k_max_collisions = 16;	// TODO : expose
 		Collider[] collisions = new Collider[k_max_collisions];
 		Vector3 sphere_check_position = self_rigidbody.position + Vector3.up * ground_collision_height;
 		int collision_count = Physics.OverlapSphereNonAlloc(sphere_check_position, ground_collision_radius, collisions);

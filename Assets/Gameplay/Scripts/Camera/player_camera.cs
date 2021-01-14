@@ -38,9 +38,18 @@ public class player_camera : MonoBehaviour
 			return;
 		}
 
+		// FIXME : only do this for mouse inputs, controller camera inputs should be handled differently
+		if (Cursor.lockState != CursorLockMode.Locked)
+		{
+			mouse_move_buffer = Vector2.zero;
+			return;
+		}
+
 		/* inputs */
 
-		Vector2 mouse_move = local_input_manager.get_camera();
+		float camera_x = local_input_manager.get_axis_value("camera_x");
+		float camera_y = local_input_manager.get_axis_value("camera_y");
+		Vector2 mouse_move = new Vector2(camera_x, camera_y);
 		
 		// smooth the input
 		mouse_move_buffer += mouse_move;
