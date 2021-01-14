@@ -360,6 +360,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: time_manager
       objectReference: {fileID: 0}
+    - target: {fileID: 1750566102649887655, guid: 0573501b88372844b963a65a8a46c098,
+        type: 3}
+      propertyPath: default_framerate
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4422685171030910794, guid: 0573501b88372844b963a65a8a46c098,
         type: 3}
       propertyPath: m_LocalPosition.x
