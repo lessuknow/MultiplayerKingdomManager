@@ -126,7 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   local_input_manager: {fileID: 0}
-  player_camera_transform: {fileID: 6037217726476984781}
+  parent_npc_base: {fileID: 0}
+  player_look_transform: {fileID: 6037217726476984781}
   self_rigidbody: {fileID: 6037217726099967463}
   self_collider: {fileID: 6037217727952931222}
   speed: 5
@@ -269,10 +270,10 @@ GameObject:
   - component: {fileID: 6037217726803239436}
   - component: {fileID: 190973117541555833}
   - component: {fileID: -8593427723150297348}
-  - component: {fileID: 7622165436280793020}
   - component: {fileID: 5035887837832745488}
+  - component: {fileID: 2742872859480394106}
   m_Layer: 10
-  m_Name: player_character
+  m_Name: player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -327,8 +328,24 @@ MonoBehaviour:
   player_identity: {fileID: 190973117541555833}
   _player_movement: {fileID: 6037217726099967460}
   _player_camera: {fileID: 6037217726476984770}
-  _player_interaction: {fileID: 7622165436280793020}
---- !u!114 &7622165436280793020
+  _player_interaction: {fileID: 2742872859480394106}
+--- !u!114 &5035887837832745488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6037217726803239437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fca99826070cdf441a8df17cfc997cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  playerBody: {fileID: 6037217726803239437}
+  physicsRoot: {fileID: 6037217726099967463}
+--- !u!114 &2742872859480394106
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -346,22 +363,6 @@ MonoBehaviour:
   local_input_manager: {fileID: 0}
   player_camera: {fileID: 6037217726476984782}
   hold_distance: 1.5
---- !u!114 &5035887837832745488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6037217726803239437}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fca99826070cdf441a8df17cfc997cd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  playerBody: {fileID: 6037217726803239437}
-  physicsRoot: {fileID: 6037217726099967463}
 --- !u!1 &6037217727952931220
 GameObject:
   m_ObjectHideFlags: 0

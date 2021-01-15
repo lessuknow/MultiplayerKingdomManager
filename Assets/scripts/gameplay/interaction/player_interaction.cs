@@ -67,6 +67,11 @@ public class player_interaction : NetworkBehaviour
         _carried_object.interact();
     }
 
+	private void drop_carried_obj()
+	{
+
+	}
+
     [Command]
     private void cmd_drop_carried_obj()
     {

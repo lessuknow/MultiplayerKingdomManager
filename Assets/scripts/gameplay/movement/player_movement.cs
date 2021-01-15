@@ -6,7 +6,9 @@ public class player_movement : MonoBehaviour
 {
 	public input_manager local_input_manager = null;
 
-	public Transform player_camera_transform = null;
+	public npc_base parent_npc_base = null;
+
+	public Transform player_look_transform = null;
 	public Rigidbody self_rigidbody = null;
 	public Collider self_collider = null;
 
@@ -23,9 +25,6 @@ public class player_movement : MonoBehaviour
 
 	private const int fixme_framerate_value = 60;   // FIXME : create `time_util.cs`
 
-	// input cache
-	private Vector2 movement_input = Vector2.zero;
-
 	enum k_jump_state
 	{
 		none,
@@ -41,36 +40,39 @@ public class player_movement : MonoBehaviour
 
 	void Update()
 	{
-		float movement_x = local_input_manager.get_axis_value("movement_x");
-		float movement_z = local_input_manager.get_axis_value("movement_z");
-		movement_input = new Vector2(movement_x, movement_z);
 
+		if (local_input_manager)
 		if (local_input_manager.get_button_down("jump") && jump_state == k_jump_state.none)
 		{
 			jump_state = k_jump_state.jump_pressed;
 		}
+		
 	}
 
 	void FixedUpdate()
 	{
-		if (!local_input_manager)
-		{
-			return;
-		}
-
 		/* inputs */
-		
-		float axis_x = movement_input.x;
-		float axis_z = movement_input.y;
+
+		Vector2 movement_input = Vector2.zero;
+		if (local_input_manager)
+		{
+			movement_input.x = local_input_manager.get_axis_value("movement_x");
+			movement_input.y = local_input_manager.get_axis_value("movement_z");
+		}
+		else if (parent_npc_base)
+		{
+			movement_input = parent_npc_base.get_movement_input();
+		}
 
 		/* movement */
 
 		Vector3 goal_velocity = self_rigidbody.velocity;
 
-		if (axis_x != 0 || axis_z != 0)
+		if (movement_input.x != 0 || movement_input.y != 0)
 		{
-			Vector3 input_velocity = axis_x * transform.right + axis_z * transform.forward;
-			float speed_total = speed * (local_input_manager.get_button_down("sprint") ? sprint_multiplier : 1.0f);
+			Vector3 input_velocity = movement_input.x * transform.right + movement_input.y * transform.forward;
+			bool sprinting = local_input_manager ? local_input_manager.get_button_down("sprint") : false;
+			float speed_total = speed * (sprinting ? sprint_multiplier : 1.0f);
 			input_velocity = input_velocity * speed_total;
 			goal_velocity.x = input_velocity.x;
 			goal_velocity.z = input_velocity.z;
@@ -127,8 +129,8 @@ public class player_movement : MonoBehaviour
 
 		/* rotation */
 		
-		float rotation_difference = player_camera_transform.rotation.eulerAngles.y - transform.rotation.eulerAngles.y;
-		transform.Rotate(Vector3.up, rotation_difference, Space.World);
+		//float rotation_difference = player_look_transform.rotation.eulerAngles.y - transform.rotation.eulerAngles.y;
+		//transform.Rotate(Vector3.up, rotation_difference, Space.World);
 	}
 
 	/// <summary>
@@ -189,5 +191,10 @@ public class player_movement : MonoBehaviour
 
 		ground_collision_y = value_found ? best_y_value : self_rigidbody.position.y;
 		return value_found;
+	}
+
+	public void apply_movement_input(Vector2 movement_input)
+	{
+
 	}
 }
