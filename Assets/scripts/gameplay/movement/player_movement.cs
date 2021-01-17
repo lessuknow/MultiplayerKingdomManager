@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class player_movement : MonoBehaviour
 {
-	public input_manager local_input_manager = null;
-
-	public npc_base parent_npc_base = null;
+	public character controlling_character = null;
 
 	public Transform player_look_transform = null;
 	public Rigidbody self_rigidbody = null;
@@ -40,13 +38,10 @@ public class player_movement : MonoBehaviour
 
 	void Update()
 	{
-
-		if (local_input_manager)
-		if (local_input_manager.get_button_down("jump") && jump_state == k_jump_state.none)
+		if (controlling_character.get_button_down("jump") && jump_state == k_jump_state.none)
 		{
 			jump_state = k_jump_state.jump_pressed;
 		}
-		
 	}
 
 	void FixedUpdate()
@@ -54,14 +49,10 @@ public class player_movement : MonoBehaviour
 		/* inputs */
 
 		Vector2 movement_input = Vector2.zero;
-		if (local_input_manager)
+		if (controlling_character)
 		{
-			movement_input.x = local_input_manager.get_axis_value("movement_x");
-			movement_input.y = local_input_manager.get_axis_value("movement_z");
-		}
-		else if (parent_npc_base)
-		{
-			movement_input = parent_npc_base.get_movement_input();
+			movement_input.x = controlling_character.get_axis_value("movement_x");
+			movement_input.y = controlling_character.get_axis_value("movement_z");
 		}
 
 		/* movement */
@@ -71,7 +62,7 @@ public class player_movement : MonoBehaviour
 		if (movement_input.x != 0 || movement_input.y != 0)
 		{
 			Vector3 input_velocity = movement_input.x * transform.right + movement_input.y * transform.forward;
-			bool sprinting = local_input_manager ? local_input_manager.get_button_down("sprint") : false;
+			bool sprinting = controlling_character.get_button_down("sprint");
 			float speed_total = speed * (sprinting ? sprint_multiplier : 1.0f);
 			input_velocity = input_velocity * speed_total;
 			goal_velocity.x = input_velocity.x;
@@ -129,8 +120,11 @@ public class player_movement : MonoBehaviour
 
 		/* rotation */
 		
-		//float rotation_difference = player_look_transform.rotation.eulerAngles.y - transform.rotation.eulerAngles.y;
-		//transform.Rotate(Vector3.up, rotation_difference, Space.World);
+		if (controlling_character is player_character)
+		{
+			float rotation_difference = player_look_transform.rotation.eulerAngles.y - transform.rotation.eulerAngles.y;
+			transform.Rotate(Vector3.up, rotation_difference, Space.World);
+		}
 	}
 
 	/// <summary>
@@ -191,10 +185,5 @@ public class player_movement : MonoBehaviour
 
 		ground_collision_y = value_found ? best_y_value : self_rigidbody.position.y;
 		return value_found;
-	}
-
-	public void apply_movement_input(Vector2 movement_input)
-	{
-
 	}
 }

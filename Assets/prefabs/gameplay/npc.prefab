@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f7a074bcedd964dbde8fffc85da9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc_rigidbody: {fileID: 0}
+  npc_rigidbody: {fileID: 1599577263424095827}
 --- !u!1 &9024506101171990665
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,8 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab979ab48191704c850363c227b0c0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  local_input_manager: {fileID: 0}
-  parent_npc_base: {fileID: 28412696568312914}
+  controlling_character: {fileID: 28412696568312914}
   player_look_transform: {fileID: 0}
   self_rigidbody: {fileID: 1599577263424095827}
   self_collider: {fileID: 96813970131599709}
