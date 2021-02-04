@@ -9,6 +9,9 @@ public class player_network_initialization : NetworkBehaviour
 	public NetworkIdentity player_identity = null;
 
     [SerializeField]
+    private player_character _player_character;
+
+    [SerializeField]
     private player_movement _player_movement;
     
     [SerializeField]
@@ -29,7 +32,7 @@ public class player_network_initialization : NetworkBehaviour
         }
         else
         {
-            _player_movement.local_input_manager = input_manager.instance;
+			_player_character.local_input_manager = input_manager.instance;
             _player_interaction.local_input_manager = input_manager.instance;
             _player_interaction.player_camera = _player_camera.GetComponent<Camera>();
             _player_camera.GetComponent<player_camera>().local_input_manager = input_manager.instance;
