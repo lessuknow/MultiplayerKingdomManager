@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class player_camera : MonoBehaviour
 {
-	public input_manager local_input_manager = null;
-	public player_network_initialization network_player_manager = null;
+	public character controlling_character = null;
+	public network_player_manager network_player_manager = null;
 
 	public new Camera camera = null;
 	public Transform camera_target = null;
@@ -33,7 +33,7 @@ public class player_camera : MonoBehaviour
 
 	void Update()
 	{
-		if(!local_input_manager)
+		if(!controlling_character)
 		{
 			return;
 		}
@@ -47,8 +47,8 @@ public class player_camera : MonoBehaviour
 
 		/* inputs */
 
-		float camera_x = local_input_manager.get_axis_value("camera_x");
-		float camera_y = local_input_manager.get_axis_value("camera_y");
+		float camera_x = controlling_character.get_axis_value("camera_x");
+		float camera_y = controlling_character.get_axis_value("camera_y");
 		Vector2 mouse_move = new Vector2(camera_x, camera_y);
 		
 		// smooth the input

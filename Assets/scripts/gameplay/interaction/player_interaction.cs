@@ -10,7 +10,7 @@ public class player_interaction : NetworkBehaviour
     /// </summary>
     public float range = 8.5f;
 
-    public input_manager local_input_manager;
+    public character controlling_character;
     public Camera player_camera;
 
     // Object the player is currently holding.
@@ -22,7 +22,7 @@ public class player_interaction : NetworkBehaviour
 
     void Update()
     {
-        if(isLocalPlayer)
+        if (isLocalPlayer)
         {
             process_inputs();
             update_objects();
@@ -94,7 +94,7 @@ public class player_interaction : NetworkBehaviour
 
     private void process_inputs()
     {
-        if (local_input_manager.get_button_pressed("mouse_click"))
+        if (controlling_character.get_button_pressed("mouse_click"))
         {
             RaycastHit hit;
             // Change to camera direction

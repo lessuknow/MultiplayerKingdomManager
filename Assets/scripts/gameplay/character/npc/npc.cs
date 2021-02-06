@@ -7,12 +7,10 @@ public class npc : character
 {
 	public Rigidbody npc_rigidbody = null;
 
+	public Vector3 goal_position = Vector3.zero;
+
 	private Dictionary<string, float> _axis_values = new Dictionary<string, float>();
 	private Dictionary<string, k_key_input_type> _button_values = new Dictionary<string, k_key_input_type>();
-
-	void Start()
-	{
-	}
 
 	void Update()
 	{
@@ -22,7 +20,7 @@ public class npc : character
 	private void _set_movement_value()
 	{
 		NavMeshPath path = new NavMeshPath();
-		bool path_found = NavMesh.CalculatePath(npc_rigidbody.position, new Vector3(4, 0, -4), -1, path);
+		bool path_found = NavMesh.CalculatePath(npc_rigidbody.position, goal_position, -1, path);
 		if (path_found && path.corners.Length > 1)
 		{
 			Vector3 next_goal = path.corners[1] - npc_rigidbody.position;

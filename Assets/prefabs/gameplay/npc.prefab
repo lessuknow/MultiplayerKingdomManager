@@ -134,6 +134,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5841283448249459296}
   - component: {fileID: 28412696568312914}
+  - component: {fileID: 1990355682019274775}
+  - component: {fileID: 1166599959466110877}
   m_Layer: 10
   m_Name: npc
   m_TagString: Player
@@ -169,6 +171,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npc_rigidbody: {fileID: 1599577263424095827}
+  goal_position: {x: 0, y: 0, z: 0}
+--- !u!114 &1990355682019274775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532038261020659592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0
+--- !u!114 &1166599959466110877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7532038261020659592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ffcdf9548aa9f468307e94851a622a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _npc: {fileID: 28412696568312914}
+  _level_node_map: {fileID: 0}
 --- !u!1 &9024506101171990665
 GameObject:
   m_ObjectHideFlags: 0

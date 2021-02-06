@@ -77,6 +77,11 @@ public class input_manager : MonoBehaviour
 
 	public float get_axis_value(string name)
 	{
+		if (_input_records.Count < 1)
+		{
+			return 0.0f;
+		}
+
 		// XXX : for now, return latest axis input regardless of what update we're
 		//		in. in the future, we may want to treat this case differently
 		return _input_records[_input_records.Count - 1].get_axis_value(name);
@@ -84,6 +89,11 @@ public class input_manager : MonoBehaviour
 
 	public bool get_button_pressed(string name)
 	{
+		if (_input_records.Count < 1)
+		{
+			return false;
+		}
+
 		if (!Time.inFixedTimeStep)
 		{
 			input_record latest_record = _input_records[_input_records.Count - 1];
@@ -105,6 +115,11 @@ public class input_manager : MonoBehaviour
 
 	public bool get_button_down(string name)
 	{
+		if (_input_records.Count < 1)
+		{
+			return false;
+		}
+
 		if (!Time.inFixedTimeStep)
 		{
 			input_record latest_record = _input_records[_input_records.Count - 1];
@@ -128,6 +143,11 @@ public class input_manager : MonoBehaviour
 
 	public bool get_button_released(string name)
 	{
+		if (_input_records.Count < 1)
+		{
+			return false;
+		}
+
 		if (!Time.inFixedTimeStep)
 		{
 			input_record latest_record = _input_records[_input_records.Count - 1];

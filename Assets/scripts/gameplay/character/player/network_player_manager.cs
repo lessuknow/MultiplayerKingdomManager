@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player_network_initialization : NetworkBehaviour
+public class network_player_manager : NetworkBehaviour
 {
 	public NetworkIdentity player_identity = null;
 
@@ -33,9 +33,6 @@ public class player_network_initialization : NetworkBehaviour
         else
         {
 			_player_character.local_input_manager = input_manager.instance;
-            _player_interaction.local_input_manager = input_manager.instance;
-            _player_interaction.player_camera = _player_camera.GetComponent<Camera>();
-            _player_camera.GetComponent<player_camera>().local_input_manager = input_manager.instance;
         }
     }
 
