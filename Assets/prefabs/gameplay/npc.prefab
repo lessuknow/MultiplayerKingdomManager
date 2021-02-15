@@ -172,6 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npc_rigidbody: {fileID: 1599577263424095827}
   goal_position: {x: 0, y: 0, z: 0}
+  network_pathfinder: {fileID: 1166599959466110877}
 --- !u!114 &1990355682019274775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +205,7 @@ MonoBehaviour:
   syncInterval: 0.1
   _npc: {fileID: 28412696568312914}
   _level_node_map: {fileID: 0}
+  _ai_value: 0
 --- !u!1 &9024506101171990665
 GameObject:
   m_ObjectHideFlags: 0

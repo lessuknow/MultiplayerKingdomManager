@@ -9,11 +9,14 @@ public class npc : character
 
 	public Vector3 goal_position = Vector3.zero;
 
+	public network_pathfinder network_pathfinder = null;
+
 	private Dictionary<string, float> _axis_values = new Dictionary<string, float>();
 	private Dictionary<string, k_key_input_type> _button_values = new Dictionary<string, k_key_input_type>();
 
 	void Update()
 	{
+		goal_position = network_pathfinder.get_goal();
 		_set_movement_value();
 	}
 

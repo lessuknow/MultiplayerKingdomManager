@@ -42,7 +42,6 @@ public class network_pathfinder : NetworkBehaviour
 		}
 		
 		_determine_goal();
-		_npc.goal_position = _goal_position;
 	}
 
 	private void _determine_goal()
@@ -54,5 +53,10 @@ public class network_pathfinder : NetworkBehaviour
 		}
 		
 		_goal_position = _level_node_map.get_location_node_of_nearest_ai_value(_ai_value);
+	}
+
+	public Vector3 get_goal()
+	{
+		return _goal_position;
 	}
 }
