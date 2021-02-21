@@ -9,16 +9,13 @@ public class network_player_manager : NetworkBehaviour
 	public NetworkIdentity player_identity = null;
 
     [SerializeField]
-    private player_character _player_character;
+    private player_character _player_character = null;
 
     [SerializeField]
-    private player_movement _player_movement;
+    private player_movement _player_movement = null;
     
     [SerializeField]
-    private GameObject _player_camera;
-
-    [SerializeField]
-    private player_interaction _player_interaction;
+    private GameObject _player_camera = null;
 
     public override void OnStartClient()
     {

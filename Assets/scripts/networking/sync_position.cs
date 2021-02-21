@@ -6,10 +6,10 @@ using Mirror;
 public class sync_position : NetworkBehaviour
 {
     [SerializeField]
-    private GameObject playerBody;
+    private GameObject playerBody = null;
 
     [SerializeField]
-    private Rigidbody physicsRoot;
+    private Rigidbody physicsRoot = null;
 
     void Start()
     {

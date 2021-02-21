@@ -8,8 +8,8 @@ public class network_pathfinder : NetworkBehaviour
 {
 	// FIXME : all of these values are being replicated :(
 
-	[SerializeField]
-	private npc _npc = null;
+	//[SerializeField]
+	//private npc _npc = null;
 
 	[SerializeField]
 	private location_node_map _level_node_map = null;

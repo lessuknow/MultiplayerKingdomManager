@@ -329,7 +329,7 @@ MonoBehaviour:
   _player_character: {fileID: 3720783859248673267}
   _player_movement: {fileID: 6037217726099967460}
   _player_camera: {fileID: 6037217726476984770}
-  _player_interaction: {fileID: 2742872859480394106}
+  _character_interaction: {fileID: 2742872859480394106}
 --- !u!114 &5035887837832745488
 MonoBehaviour:
   m_ObjectHideFlags: 0

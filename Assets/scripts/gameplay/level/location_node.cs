@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class location_node : MonoBehaviour
 {
-	public string name = "unnamed";
+	public string node_name = "unnamed";
 	
 	// TODO : use collision boxes to define the area, a radius is too broad
 	public float radius = 3.0f;
